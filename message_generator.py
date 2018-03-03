@@ -318,7 +318,6 @@ def main():
         output_seeded_file.writelines(FormatMessageForFile(s) )
         seeded_count = seeded_count + 1
 
-    print( "=== Resting orders for match " )
 ###################################################################
 # Starting point
 ###################################################################
