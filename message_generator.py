@@ -138,7 +138,7 @@ def LoadStockTable():
        (key, symbol, instrument_id) = line.split(",")
        stocks[int(key)] = Stock( int(key), symbol, int(instrument_id) )
 
-    stock_file.close()
+    stock_file.close() 
 
     print("total stock: ", len(stocks) )
     # for i in stocks:
