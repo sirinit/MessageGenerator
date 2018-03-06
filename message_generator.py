@@ -107,6 +107,14 @@ class Message(GroupOrderAttr):
             return 'S'
         else:
             return 'B'
+    def FormatToFile( self ):
+        if ( self.msg_type == "cxl" or self.msg_type == "cxlrpl" ):
+            return "{0},{1},{2},{3},{4},{5},{6},{7},{8}".format( self.seq, self.mtime, self.msg_type, self.stock.symbol, self.real_price,
+                    self.time_in_force, self.trading_account, self.clordid, self.orig_clordid)
+        else:
+            return "{0},{1},{2},{3},{4},{5},{6},{7}".format( self.seq, self.mtime, self.msg_type, self.stock.symbol, self.real_price,
+                    self.time_in_force, self.trading_account, self.clordid)
+
         
         
 ###################################################################
@@ -290,10 +298,6 @@ def main():
     PrepareCHXBook()
     CreateTestMessage()
 
-    print("=== Test Messages " )
-    for msg in test_messages:
-        print( FormatMessageForFile(msg) )
-
     print("==== CHX Book " )
     for i in chx_book:
         if ( len(chx_book[i]) ):
@@ -309,14 +313,22 @@ def main():
         resting_match_orders[r].seq = seeded_count
         resting_match_orders[r].mtime = seeded_count * 100
         print( FormatMessageForFile(resting_match_orders[r]) )
-        output_seeded_file.writelines( FormatMessageForFile(resting_match_orders[r]) )
+        output_seeded_file.write( resting_match_orders[r].FormatToFile() + '\n' )
         seeded_count = seeded_count + 1
     for s in seeded_orders:
         s.seq = seeded_count
         s.mtime = seeded_count * 100
         print( FormatMessageForFile(s) )
-        output_seeded_file.writelines(FormatMessageForFile(s) )
+        output_seeded_file.write(s.FormatToFile()  + '\n')
         seeded_count = seeded_count + 1
+
+    print("=== Test Messages " )
+    try:
+        output_test_file = open(args.output_test_file, "w")
+    except IOError:
+        print( args.output_test_file, " could not open for write")
+    for msg in test_messages:
+        output_test_file.write( msg.FormatToFile() + '\n')
 
 ###################################################################
 # Starting point
