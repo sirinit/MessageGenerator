@@ -322,7 +322,7 @@ def main():
         output_seeded_file.write(s.FormatToFile()  + '\n')
         seeded_count = seeded_count + 1
 
-    print("=== Test Messages " )
+    print("=== Test Messages" )
     try:
         output_test_file = open(args.output_test_file, "w")
     except IOError:
